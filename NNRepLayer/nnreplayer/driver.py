@@ -28,7 +28,7 @@ import tensorflow.keras.backend as kb
 Done:
 1) Function to repair weights: outputs new parameters and nkeras model with new weights
 2) Testing and verifcation of results, bug fixes and basic test cases for sanity checks.
-3) Cost expression as input to weight_repair function. 
+3) Cost expression as input to weight_repair function.
 
 In Progress: 
 1) Function to the gurobi for output constraints
@@ -38,7 +38,7 @@ In Progress:
 
 Remaining:
 1) Store in LP format
-2) modification to repair weights (input architecture): tf and pytorch,
+2) modification to repair weight (input architecture): tf and pytorch,
     future (h5py discussion)
 3) Defined cost expression: MSE, SSE
 4) Break model into two parts: 

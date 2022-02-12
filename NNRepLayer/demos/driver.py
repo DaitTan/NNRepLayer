@@ -24,36 +24,6 @@ from tensorflow import keras
 import tensorflow.keras.backend as kb
 
 
-'''
-Done:
-1) Function to repair weights: outputs new parameters and nkeras model with new weights
-2) Testing and verifcation of results, bug fixes and basic test cases for sanity checks.
-3) Cost expression as input to weight_repair function. 
-
-In Progress: 
-1) Function to the gurobi for output constraints
-2) Test for both the examples and do sanity checks
-3) Write sampler for NN
-4) Check for cost expression parsing and standardize the input, ouputs
-
-Remaining:
-1) Store in LP format
-2) modification to repair weights (input architecture): tf and pytorch,
-    future (h5py discussion)
-3) Defined cost expression: MSE, SSE
-4) Break model into two parts: 
- 
-
-    1)   f(lin cons, model, samples)
-            ...
-            return solver_model, variable
-        
-    2) define additional constraints on solver_model and variables
-    3) run wrapper, pyomo
-
-
-
-'''
 #define costum loss function
 def keras_SSE_costum(y_actual, y_predicted):
     err = y_actual - y_predicted

@@ -1,7 +1,6 @@
-echo "enter the complete file path setup.py file"
-read filePath
 poetry shell
-cd $filePath
-ls
-python3 setup.py install
+cd $2
+echo "Path to folder is:\t$2"
+echo "Setting up Gurobi for python"
+sudo $1 setup.py install
 exit

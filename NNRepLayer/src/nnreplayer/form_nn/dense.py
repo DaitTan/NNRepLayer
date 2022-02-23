@@ -9,10 +9,6 @@ class Dense:
         return np.maximum(x, 0)
     
     def __call__(self, x, relu=False):
-        # print(x.shape)
-        # print(x)
-        # print(x.shape)
-        # print(self.weights.shape)
         x = x @ self.weights + self.bias
         if relu:
             x = self._relu(x)

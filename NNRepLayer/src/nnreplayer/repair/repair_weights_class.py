@@ -18,7 +18,7 @@ class repair_weights:
     
     def extract_network(self, x_dataset):
         
-        
+        print("************************************************")
         mlp_orig = MLP(self.architecture[0], self.architecture[-1], self.architecture[1:-1])
         mlp_orig = mlp_set_weights(mlp_orig, self.model_orig_params)
         layer_values_train = mlp_orig(x_dataset, relu=False)

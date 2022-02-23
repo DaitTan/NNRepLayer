@@ -20,14 +20,14 @@ class MIPNNModel:
         self.layers.append(MIPLayer(self.model, layer_to_repair, prev, architecture[-1], weights[-1], bias[-1], param_bounds))
         
         
-    def __call__(self, x, shape, A, b, relu=False, weightSlack = 10, output_bounds=(-1e1, 1e1)):
+    def __call__(self, x, shape, output_constraint_list, relu=False, weightSlack = 10, output_bounds=(-1e1, 1e1)):
         
         m, n = shape
         assert n == self.uin
         
         for layer in self.layers[:-1]:
-            x = layer(x, (m, layer.uin), A,b, relu=True, weightSlack = weightSlack, output_bounds=output_bounds)
+            x = layer(x, (m, layer.uin), output_constraint_list, relu=True, weightSlack = weightSlack, output_bounds=output_bounds)
         
         layer = self.layers[-1]
-        y = layer(x, (m, layer.uin), A,b, relu=relu, weightSlack = weightSlack, output_bounds=output_bounds)
+        y = layer(x, (m, layer.uin), output_constraint_list, relu=relu, weightSlack = weightSlack, output_bounds=output_bounds)
         return y

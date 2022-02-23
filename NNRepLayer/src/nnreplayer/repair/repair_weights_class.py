@@ -6,14 +6,13 @@ import pyomo.environ as pyo
 from tensorflow import keras
 
 class repair_weights:
-    def __init__(self, model_orig, layer_to_repair, architecture, A,b, cost_function_output):
+    def __init__(self, model_orig, layer_to_repair, architecture, output_constraint_list, cost_function_output):
         self.model_orig = model_orig
         self.layer_to_repair = layer_to_repair
         self.architecture = architecture
         self.cost_function_output = cost_function_output
         self.model_orig_params = mlp_get_weights(self.model_orig)
-        self.A = A
-        self.b = b
+        self.output_constraint_list = output_constraint_list
         
 
     
@@ -32,7 +31,7 @@ class repair_weights:
 
         num_samples = layer_values_train[self.layer_to_repair-2].shape[0]
         mip_model_layer = MIPNNModel(self.layer_to_repair, self.architecture, weights, bias)
-        y_ = mip_model_layer(layer_values_train[self.layer_to_repair-2], (num_samples, self.architecture[self.layer_to_repair-1]), self.A,self.b, weightSlack=weightSlack)
+        y_ = mip_model_layer(layer_values_train[self.layer_to_repair-2], (num_samples, self.architecture[self.layer_to_repair-1]), self.output_constraint_list, weightSlack=weightSlack)
         model_lay = mip_model_layer.model
 
         cost_expr = self.cost_function_output(y_, y_train) 

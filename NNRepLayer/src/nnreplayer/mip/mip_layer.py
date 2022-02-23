@@ -1,7 +1,7 @@
 import pyomo.environ as pyo
 import pyomo.gdp as pyg
 from pyomo.gdp import *
-from ..utils.utils import generate_constraints
+from ..utils.utils import generate_output_constraints
 
 class MIPLayer:
     def __init__(self, model, layer_to_repair, uin, uout, weights, bias, param_bounds=(-1, 1)):
@@ -31,12 +31,12 @@ class MIPLayer:
         self.layer_to_repair = layer_to_repair
         
         
-    def __call__(self, x, shape, A,b, relu=False,weightSlack=10, output_bounds=(-1e1, 1e1)):
+    def __call__(self, x, shape, output_constraint_list, relu=False,weightSlack=10, output_bounds=(-1e1, 1e1)):
         
         self.lout = getattr(self, 'layer_num', 0)+1
         if relu:
             return self._relu_constraints(x, shape, self.lout, weightSlack, output_bounds)
-        return self._constraints(x, shape, self.lout, A,b, weightSlack, output_bounds)
+        return self._constraints(x, shape, self.lout, output_constraint_list, weightSlack, output_bounds)
     
     def _relu_constraints(self, x, shape, l, weightSlack = 10, output_bounds=(-1e1, 1e1)):
         m, n = shape
@@ -93,7 +93,7 @@ class MIPLayer:
         setattr(self.model, 'disjunction'+str(l), pyg.Disjunction(range(m), range(self.uout), rule=disjuncts))
         return  getattr(self.model, x_l)
         
-    def _constraints(self, x, shape, l, A,b, weightSlack = 10, output_bounds=(-1e1, 1e1)):
+    def _constraints(self, x, shape, l, output_constraint_list, weightSlack = 10, output_bounds=(-1e1, 1e1)):
         m, n = shape
         assert n == self.uin
         if l==self.layer_to_repair+1:
@@ -117,7 +117,7 @@ class MIPLayer:
         setattr(self.model, 'eq_constraint'+str(l),
                 pyo.Constraint(range(m), range(self.uout), rule=constraints))
         
-        constraint_addition_string = generate_constraints(A,b)
+        constraint_addition_string = generate_output_constraints(output_constraint_list)
         exec(constraint_addition_string, locals(), globals())
         # def constraint_inside0(model, i):  
         #     return [(getattr(model, ind_l)[i, 0] == 0, getattr(model, x_l)[i, 0] + 0.0001 <= getattr(model, x_l)[i, 1], 

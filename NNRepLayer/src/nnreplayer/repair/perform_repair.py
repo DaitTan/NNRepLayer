@@ -19,14 +19,14 @@ import tensorflow.keras.backend as kb
 
 from .repair_weights_class import repair_weights
 
-def perform_repair(layer_to_repair, model_orig, architecture, A,b,cost_function, train_dataset, options):
+def perform_repair(layer_to_repair, model_orig, architecture, output_constraint_list,cost_function, train_dataset, options):
     x_train, y_train = train_dataset
     gdp_formulation = options.gdp_formulation
     solver_factory = options.solver_factory
     solver_language = options.solver_language
     model_output_type = options.model_output_type
 
-    rep_weights = repair_weights(model_orig, layer_to_repair, architecture, A,b, cost_function)
+    rep_weights = repair_weights(model_orig, layer_to_repair, architecture, output_constraint_list, cost_function)
     layer_values_train = rep_weights.extract_network(x_train)
 
     cost_expr, model_lay = rep_weights.set_up_optimizer(y_train, layer_values_train, weightSlack=options.weightSlack)

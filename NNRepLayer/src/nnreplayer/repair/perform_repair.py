@@ -25,6 +25,8 @@ def perform_repair(layer_to_repair, model_orig, architecture, output_constraint_
     solver_factory = options.solver_factory
     solver_language = options.solver_language
     model_output_type = options.model_output_type
+    optimizer_time_limit = options.optimizer_time_limit
+    optimizer_mip_gap = options.optimizer_mip_gap
 
     rep_weights = repair_weights(model_orig, layer_to_repair, architecture, output_constraint_list, cost_function)
     layer_values_train = rep_weights.extract_network(x_train)
@@ -32,7 +34,7 @@ def perform_repair(layer_to_repair, model_orig, architecture, output_constraint_
     cost_expr, model_lay = rep_weights.set_up_optimizer(y_train, layer_values_train, weightSlack=options.weightSlack)
 
     
-    new_model_lay = rep_weights.solve_optimization_problem(model_lay, cost_expr, gdp_formulation, solver_factory, solver_language)
+    new_model_lay = rep_weights.solve_optimization_problem(model_lay, cost_expr, gdp_formulation, solver_factory, solver_language, optimizer_time_limit, optimizer_mip_gap)
 
     model_new_params = rep_weights.set_new_params(new_model_lay)
 

@@ -41,15 +41,15 @@ class repair_weights:
         cost_expr += getattr(model_lay, dw_l)
         return cost_expr, model_lay
 
-    def solve_optimization_problem(self, model_lay, cost_expr, gdp_formulation, solver_factory, solver_language):
+    def solve_optimization_problem(self, model_lay, cost_expr, gdp_formulation, solver_factory, solver_language, optimizer_time_limit, optimizer_mip_gap):
         # gdp_formulation =  'gdp.bigm'
         # solver_factory = 'gurobi'
         # solver_language = "python"
         model_lay.obj = pyo.Objective(expr=cost_expr)
         pyo.TransformationFactory(gdp_formulation).apply_to(model_lay)
         opt = pyo.SolverFactory(solver_factory,solver_io=solver_language)
-        opt.options['timelimit'] = 3600
-        opt.options['mipgap'] = 0.02
+        opt.options['timelimit'] = optimizer_time_limit
+        opt.options['mipgap'] = optimizer_mip_gap
         opt.solve(model_lay, tee=True)
         print(model_lay.dw.display())
         return model_lay

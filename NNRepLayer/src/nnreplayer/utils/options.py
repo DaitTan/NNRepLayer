@@ -8,3 +8,5 @@ class Options:
     solver_language: Any
     model_output_type: Any
     weightSlack: Any
+    optimizer_time_limit: Any
+    optimizer_mip_gap: Any

@@ -16,3 +16,5 @@ imp: 8. parameter bound should be compatible with bound of weight error (or weig
 16. check what happens if an empty list of constraints is inputted to the repair obj
 17. write a parser to extract the atchitechture and weights of an inputed model (including relu activations) << important
     a) it will change the input of NNRepair class to weight and architecture
+    
+ Date: May 11: Added documented code. Need to update demos as per the new code (change import statements) and add docs. Docs status: Pages for defining flow are remaining.
